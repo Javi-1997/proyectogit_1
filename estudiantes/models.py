@@ -21,7 +21,7 @@ class Estudiante(models.Model):
         return f"{self.apellido}, {self.nombre}"
 
 
-class Profesores(models.Model):
+class Profesor(models.Model):
     nombre = models.CharField(max_length=256)
     apellido = models.CharField(max_length=256)
     dni = models.CharField(max_length=32)
@@ -43,4 +43,3 @@ class Entregable(models.Model):
 class Instituto(models.Model):
     nombre = models.CharField(max_length=256)
 
-hola
