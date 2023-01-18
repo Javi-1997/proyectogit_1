@@ -16,11 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+
 from estudiantes.views import inicio
+from PizzaStore.views import store
 
 
 urlpatterns = [
     path('', inicio, name="inicio"),
     path('admin/', admin.site.urls),
     path('plataforma/', include('estudiantes.urls')),
+    path('',store, name="store"),
+    path('formulario_lista_de_pedido/',views.formulario_lista_de_pedido),
+
+    
 ]
+
+
