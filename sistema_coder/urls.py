@@ -26,7 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('plataforma/', include('estudiantes.urls')),
     path('',store, name="store"),
-    path('formulario_lista_de_pedido/',views.formulario_lista_de_pedido),
+    
 
     
 ]
