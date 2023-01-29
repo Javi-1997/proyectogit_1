@@ -1,16 +1,21 @@
 from django.urls import path
 
 from estudiantes.views import (
-    listar_profesores, listar_cursos,
+    listar_profesores, listar_cursos,listar_estudiantes,
     crear_curso, buscar_cursos, ver_curso, editar_curso, eliminar_curso,
     EstudianteListView, EstudianteCreateView, EstudianteUpdateView,
     EstudianteDeleteView, EstudianteDetailView
 )
 
+from estudiantes.views import (añadir_estudiante,añadir_profesor)
+
 
 urlpatterns = [
+    path('estudiantes/',listar_estudiantes, name="listar_estudiantes"),
     path('profesores/', listar_profesores, name="listar_profesores"),
     path('crear-curso/', crear_curso, name="crear_curso"),
+    path('añadir-estudiante/',añadir_estudiante, name="añadir_estudiante"),
+    path('añadir-profesor/',añadir_profesor, name="añadir_profesor"),
     # URLS de cursos (basadas den views funcionales)
     path('cursos/', listar_cursos, name="listar_cursos"),
     path('buscar-cursos/', buscar_cursos, name="buscar_cursos"),
@@ -23,4 +28,5 @@ urlpatterns = [
     path('crear-alumno/', EstudianteCreateView.as_view(), name="crear_alumno"),
     path('editar-alumno/<int:pk>/', EstudianteUpdateView.as_view(), name="editar_alumno"),
     path('eliminar-alumno/<int:pk>/', EstudianteDeleteView.as_view(), name="eliminar_alumno"),
-]
+    
+ ]

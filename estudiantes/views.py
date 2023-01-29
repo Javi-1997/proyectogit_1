@@ -8,7 +8,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 
 from estudiantes.models import Estudiante, Profesor, Curso
 from estudiantes.forms import CursoFormulario
-
+from estudiantes.forms import EstudianteFormulario,ProfesorFormulario
 
 def inicio(request):
     return render(
@@ -47,6 +47,16 @@ def listar_cursos(request):
     return render(
         request=request,
         template_name='estudiantes/lista_cursos.html',
+        context=contexto,
+    )
+
+def listar_estudiantes(request):
+    contexto = {
+        'cursos': Curso.objects.all()
+    }
+    return render(
+        request=request,
+        template_name='estudiantes/lista_estudiantes.html',
         context=contexto,
     )
 
@@ -173,3 +183,23 @@ class EstudianteUpdateView(UpdateView):
 class EstudianteDeleteView(DeleteView):
     model = Estudiante
     success_url = reverse_lazy('listar_alumnos')
+
+
+
+def añadir_estudiante(request):
+     if request.method == "POST":
+        pass
+     else:    
+          return render(
+              request=request,
+              template_name='estudiantes/formulario_estudiantes.html'
+        )
+
+def añadir_profesor(request):
+     if request.method == "POST":
+        pass
+     else: #Get   
+          return render(
+              request=request,
+              template_name='estudiantes/formulario_profesores.html'
+        )
