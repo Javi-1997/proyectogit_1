@@ -43,3 +43,5 @@ class Entregable(models.Model):
 class Instituto(models.Model):
     nombre = models.CharField(max_length=256)
 
+class Entrada_de_blog(models.Model):
+    nombre=models.CharField

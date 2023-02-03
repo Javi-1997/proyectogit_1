@@ -76,7 +76,6 @@
 }
 
 body {
-  background-color: <#0d6efd>;
   margin: 0;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);
@@ -283,7 +282,7 @@ kbd {
   padding: 0.2rem 0.4rem;
   font-size: 0.875em;
   color: #fff;
-  background-color: #0fe97c;
+  background-color: #212529;
   border-radius: 0.2rem;
 }
 kbd kbd {

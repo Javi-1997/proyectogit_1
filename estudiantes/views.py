@@ -7,8 +7,15 @@ from django.http import HttpResponse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
 from estudiantes.models import Estudiante, Profesor, Curso
-from estudiantes.forms import CursoFormulario
+from estudiantes.forms import CursoFormulario,UserRegisterForm
 from estudiantes.forms import EstudianteFormulario,ProfesorFormulario
+
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from estudiantes.forms import CursoFormulario, ProfesorFormulario, UserRegisterForm, UserEditForm
+
 
 def inicio(request):
     return render(
@@ -203,3 +210,100 @@ def añadir_profesor(request):
               request=request,
               template_name='estudiantes/formulario_profesores.html'
         )
+def about1(request):
+    return render(
+        request=request,
+        template_name='estudiantes/About1.html',
+    )
+
+def login_request(request):
+
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data = request.POST)
+
+        if form.is_valid():  # Si pasó la validación de Django
+
+            usuario = form.cleaned_data.get('username')
+            contrasenia = form.cleaned_data.get('password')
+
+            user = authenticate(username= usuario, password=contrasenia)
+
+            if user is not None:
+                login(request, user)
+
+                return render(request, "estudiantes/inicio.html", {"mensaje":f"Bienvenido {usuario}"})
+            else:
+                return render(request, "estudiantes/inicio.html", {"mensaje":"Datos incorrectos"})
+           
+        else:
+
+            return render(request, "estudiantes/inicio.html", {"mensaje":"Formulario erroneo"})
+
+    form = AuthenticationForm()
+
+    return render(request, "estudiantes/login.html", {"form": form})
+
+def registro(request):
+    if request.method == "POST":
+        formulario = UserRegisterForm(request.POST)
+
+        if formulario.is_valid():
+            formulario.save()  # Esto lo puedo usar porque es un model form
+            url_exitosa = reverse('inicio')
+            return redirect(url_exitosa)
+    else:  # GET
+        formulario = UserRegisterForm()
+    return render(
+        request=request,
+        template_name='estudiantes/register.html',
+        context={'form': formulario},
+    )
+
+class listar_cursos (LoginRequiredMixin):
+    d=1
+
+@login_required
+def incio(request):
+
+    return render(request,"estudiante/listar_estudiantes.html")    
+
+@login_required
+def listar_profesores(request):
+    contexto = {
+        'profesores': Profesor.objects.all()
+    }
+    return render(
+        request=request,
+        template_name='estudiantes/lista_profesores.html',
+        context=contexto,
+    )
+
+@login_required
+def editarPerfil(request):
+
+    usuario = request.user
+
+    if request.method == 'POST':
+
+        miFormulario = UserEditForm(request.POST)
+
+        if miFormulario.is_valid():
+
+            informacion = miFormulario.cleaned_data
+
+            usuario.email = informacion['email']
+            usuario.password1 = informacion['password1']
+            usuario.password2 = informacion['password2']
+            usuario.last_name = informacion['last_name']
+            usuario.first_name = informacion['first_name']
+
+            usuario.save()
+
+            return render(request, "AppCoder/inicio.html")
+
+        else:
+
+            miFormulario = UserEditForm(initial={'email': usuario.email})
+
+            return render(request, "AppCoder/editarPerfil.html", {"miFormulario": miFormulario, "usuario": usuario})
+

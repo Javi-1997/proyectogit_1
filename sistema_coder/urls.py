@@ -18,14 +18,14 @@ from django.urls import path, include
 
 
 from estudiantes.views import inicio
-from PizzaStore.views import store
+
 
 
 urlpatterns = [
     path('', inicio, name="inicio"),
     path('admin/', admin.site.urls),
     path('plataforma/', include('estudiantes.urls')),
-    path('',store, name="store"),
+   
     
 
     

@@ -1,13 +1,16 @@
 from django.urls import path
 
 from estudiantes.views import (
-    listar_profesores, listar_cursos,listar_estudiantes,
+    listar_profesores, listar_cursos,listar_estudiantes,about1,
     crear_curso, buscar_cursos, ver_curso, editar_curso, eliminar_curso,
     EstudianteListView, EstudianteCreateView, EstudianteUpdateView,
-    EstudianteDeleteView, EstudianteDetailView
-)
+    EstudianteDeleteView, EstudianteDetailView,login_request,registro,
+ )
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.views import LogoutView
 
-from estudiantes.views import (añadir_estudiante,añadir_profesor)
+from estudiantes.views import (añadir_estudiante,añadir_profesor,editarPerfil)
 
 
 urlpatterns = [
@@ -28,5 +31,9 @@ urlpatterns = [
     path('crear-alumno/', EstudianteCreateView.as_view(), name="crear_alumno"),
     path('editar-alumno/<int:pk>/', EstudianteUpdateView.as_view(), name="editar_alumno"),
     path('eliminar-alumno/<int:pk>/', EstudianteDeleteView.as_view(), name="eliminar_alumno"),
-    
- ]
+    path('about1/', about1, name='about1'),
+    path('login/', login, name="Login"),
+    path('register/',registro, name="Registro"),
+    path('logout', LogoutView.as_view(template_name='estudiantes/logout.html'), name='Logout'),
+    path('editarPerfil', editarPerfil, name="EditarPerfil"),
+    ]

@@ -10,6 +10,7 @@
 
 ```
 pip install -r requirements.txt
+
 ```
 
 ## Instrucciones para entrar al panel aministrativo de Django
