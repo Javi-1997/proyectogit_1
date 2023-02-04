@@ -58,7 +58,9 @@ class AvatarFormulario(forms.ModelForm):
 
 
 class UserUpdateForm(forms.ModelForm):
-
+    
+    email= forms.EmailField(label='mail')
+    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
     class Meta:
         model = User
         fields = ['last_name', 'first_name', 'email']
