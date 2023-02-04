@@ -46,7 +46,7 @@ def listar_profesores(request):
         context=contexto,
     )
 
-@login_required
+
 def listar_cursos(request):
     contexto = {
         'cursos': Curso.objects.all()
@@ -259,8 +259,7 @@ def registro(request):
         context={'form': formulario},
     )
 
-class listar_cursos (LoginRequiredMixin):
-    d=1
+
 
 @login_required
 def incio(request):
