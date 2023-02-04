@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.db.models import Q
 from django.shortcuts import render, redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse,reverse_lazy
 from django.http import HttpResponse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
@@ -14,8 +14,8 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from estudiantes.forms import CursoFormulario, ProfesorFormulario, UserRegisterForm, UserEditForm
-
+from estudiantes.forms import CursoFormulario, ProfesorFormulario, UserRegisterForm, UserEditForm,AvatarFormulario,UserUpdateForm
+from django.contrib.auth.models import User
 
 def inicio(request):
     return render(
@@ -59,7 +59,7 @@ def listar_cursos(request):
 
 def listar_estudiantes(request):
     contexto = {
-        'cursos': Curso.objects.all()
+        'cursos': Estudiante.objects.all()
     }
     return render(
         request=request,
@@ -192,7 +192,6 @@ class EstudianteDeleteView(DeleteView):
     success_url = reverse_lazy('listar_alumnos')
 
 
-
 def añadir_estudiante(request):
      if request.method == "POST":
         pass
@@ -243,6 +242,7 @@ def login_request(request):
 
     return render(request, "estudiantes/login.html", {"form": form})
 
+
 def registro(request):
     if request.method == "POST":
         formulario = UserRegisterForm(request.POST)
@@ -278,32 +278,31 @@ def listar_profesores(request):
         context=contexto,
     )
 
-@login_required
-def editarPerfil(request):
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserUpdateForm
+    success_url = reverse_lazy('inicio')
+    template_name = 'estudiantes/formulario_perfil.html'
 
-    usuario = request.user
+    def get_object(self, queryset=None):
+        return self.request.user
 
-    if request.method == 'POST':
 
-        miFormulario = UserEditForm(request.POST)
 
-        if miFormulario.is_valid():
+def agregar_avatar(request):
+    if request.method == "POST":
+        formulario = AvatarFormulario(request.POST, request.FILES) # Aquí me llega toda la info del formulario html
 
-            informacion = miFormulario.cleaned_data
-
-            usuario.email = informacion['email']
-            usuario.password1 = informacion['password1']
-            usuario.password2 = informacion['password2']
-            usuario.last_name = informacion['last_name']
-            usuario.first_name = informacion['first_name']
-
-            usuario.save()
-
-            return render(request, "AppCoder/inicio.html")
-
-        else:
-
-            miFormulario = UserEditForm(initial={'email': usuario.email})
-
-            return render(request, "AppCoder/editarPerfil.html", {"miFormulario": miFormulario, "usuario": usuario})
-
+        if formulario.is_valid():
+            avatar = formulario.save()
+            avatar.user = request.user
+            avatar.save()
+            url_exitosa = reverse('inicio')
+            return redirect(url_exitosa)
+    else:  # GET
+        formulario = AvatarFormulario()
+    return render(
+        request=request,
+        template_name='estudiantes/formulario_avatar.html',
+        context={'form': formulario},
+    )

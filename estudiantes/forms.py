@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,AbstractUser
+
+from estudiantes.models import Profesor, Avatar
 
 class CursoFormulario(forms.Form):
     nombre = forms.CharField(max_length=64)
@@ -47,3 +49,16 @@ class UserEditForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['email', 'password1', 'password2', 'last_name', 'first_name']
+
+class AvatarFormulario(forms.ModelForm):
+
+    class Meta:
+        model = Avatar
+        fields = ['imagen']
+
+
+class UserUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ['last_name', 'first_name', 'email']
