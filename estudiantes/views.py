@@ -6,15 +6,15 @@ from django.urls import reverse,reverse_lazy
 from django.http import HttpResponse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
-from estudiantes.models import Estudiante, Profesor, Curso
-from estudiantes.forms import CursoFormulario,UserRegisterForm
+from estudiantes.models import Estudiante, Profesor, Curso,Entrada_de_blog
+from estudiantes.forms import CursoFormulario,UserRegisterForm,BlogFormulario
 from estudiantes.forms import EstudianteFormulario,ProfesorFormulario
 
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from estudiantes.forms import CursoFormulario, ProfesorFormulario, UserRegisterForm, UserEditForm,AvatarFormulario,UserUpdateForm
+from estudiantes.forms import CursoFormulario, ProfesorFormulario, UserRegisterForm, UserEditForm,AvatarFormulario,UserUpdateForm,BlogFormulario
 from django.contrib.auth.models import User
 
 def inicio(request):
@@ -305,3 +305,29 @@ def agregar_avatar(request):
         template_name='estudiantes/formulario_avatar.html',
         context={'form': formulario},
     )
+
+def Blog(request):
+     if request.method == "POST":
+        pass
+     else: #Get   
+          return render(
+              request=request,
+              template_name='estudiantes/pages.html'
+        )
+
+class BlogCreateView(LoginRequiredMixin, CreateView):
+    model = Entrada_de_blog 
+    form_class = BlogFormulario
+    success_url = reverse_lazy('pages')
+    template_name = 'estudiantes/pages.html'
+
+class BlogEditView(LoginRequiredMixin, UpdateView):
+    model = Entrada_de_blog
+    form_class = BlogFormulario
+    success_url = reverse_lazy('listar_noticias')
+    template_name = 'estudiantes/pages.html'
+
+class BlogDeleteView(LoginRequiredMixin,DeleteView):
+    model = Entrada_de_blog
+    success_url = reverse_lazy('listar_noticias')
+    template_name = 'estudiantes/estudiantes.html'

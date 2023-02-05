@@ -22,3 +22,4 @@ python manage.py createsuperuser
 ```
 127.0.0.1:8000/admin
 ```
+link video:https://www.loom.com/share/571c8d18d5644884b4706545b0106f5b

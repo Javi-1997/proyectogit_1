@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User,AbstractUser
 
-from estudiantes.models import Profesor, Avatar
+from estudiantes.models import Profesor, Avatar,Entrada_de_blog
 
 class CursoFormulario(forms.Form):
     nombre = forms.CharField(max_length=64)
@@ -64,3 +64,26 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['last_name', 'first_name', 'email']
+
+class BlogFormulario(forms.ModelForm):
+    cuerpo = forms.CharField(max_length=1000, widget=forms.Textarea())
+    fecha_publicacion = forms.DateField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        from django.forms.widgets import HiddenInput
+        super(BlogFormulario, self).__init__(*args, **kwargs)
+        self.fields['usuario'].widget = HiddenInput()
+
+    class Meta:
+        model = Entrada_de_blog
+        fields = ['usuario','titulo','subtitulo','cuerpo','fecha_publicacion','autor','imagen']
+
+
+
+class EditNoticiasForm(forms.ModelForm):
+    cuerpo = forms.CharField(max_length=1000, widget=forms.Textarea())
+    fecha_publicacion = forms.DateField(required=True)
+
+    class Meta:
+        model = Entrada_de_blog
+        fields = ['titulo','subtitulo','cuerpo','fecha_publicacion','autor','imagen']

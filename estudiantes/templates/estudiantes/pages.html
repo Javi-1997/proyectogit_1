@@ -1,0 +1,28 @@
+{% extends "estudiantes/base.html" %}
+
+{% block subtitulo %}Blog Super{% endblock subtitulo %}
+
+{% block contenido %}
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}  
+    {% for field in form.visible_fields %}
+        <div class="form-group">
+            <label for="id_{{ field.name }}">{{ field.label }}:</label>
+            {{ field }}
+
+            {% if field.errors %}
+                <small>
+                    {% for error in field.errors %}
+                        <p class="text text-danger">{{ error|escape }}</p>
+                    {% endfor %}
+                </small>
+                  {% endif %}
+  
+              </div>
+          {% endfor %}
+  <input type="submit" value="Enviar"/>
+  <input type="hidden" name="usuario" value="{{ request.user.pk }}"/>
+</form>
+{{ request.user }}
+{% endblock contenido %}

@@ -3,7 +3,7 @@ from django.urls import path
 from estudiantes.views import (listar_profesores,listar_cursos,listar_estudiantes,about1,
     crear_curso, buscar_cursos, ver_curso, editar_curso, eliminar_curso,
     EstudianteListView, EstudianteCreateView, EstudianteUpdateView,ProfileUpdateView,
-    EstudianteDeleteView, EstudianteDetailView,login_request,registro,agregar_avatar)
+    EstudianteDeleteView, EstudianteDetailView,login_request,registro,agregar_avatar,Blog)
     
      
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -36,5 +36,6 @@ urlpatterns = [
     path('register/',registro, name="Registro"),
     path('logout', LogoutView.as_view(template_name='estudiantes/logout.html'), name='Logout'),
     path('editar-Perfil',ProfileUpdateView.as_view(), name="EditarPerfil"),
-    path('agregar-avatar/',agregar_avatar, name="Agregar_avatar") 
+    path('agregar-avatar/',agregar_avatar, name="Agregar_avatar"),
+    path('pages/',Blog,name="pages")
     ]
